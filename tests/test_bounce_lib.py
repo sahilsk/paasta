@@ -195,12 +195,6 @@ class TestBounceLib:
         fake_app = mock.Mock(tasks=tasks, health_checks=[])
         assert bounce_lib.get_happy_tasks(fake_app, 'service', 'namespace') == tasks
 
-    def test_get_happy_tasks_when_running_with_healthchecks_defined(self):
-        """All running tasks with no health check results are unhealthy if the app defines healthchecks"""
-        tasks = [mock.Mock(health_check_results=[]) for _ in xrange(5)]
-        fake_app = mock.Mock(tasks=tasks, health_checks=["fake_healthcheck_definition"])
-        assert bounce_lib.get_happy_tasks(fake_app, 'service', 'namespace') == []
-
     def test_get_happy_tasks_when_all_healthy(self):
         """All tasks with only passing healthchecks should be happy"""
         tasks = [mock.Mock(health_check_results=[mock.Mock(alive=True)]) for _ in xrange(5)]

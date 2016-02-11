@@ -256,10 +256,6 @@ def get_happy_tasks(app, service, nerve_ns, min_task_uptime=None, check_haproxy=
             if (now - task.started_at).total_seconds() < min_task_uptime:
                 continue
 
-        # if there are healthchecks defined for the app but none have executed yet, then task is unhappy
-        if len(app.health_checks) > 0 and len(task.health_check_results) == 0:
-            continue
-
         # if there are health check results, check if at least one healthcheck is passing
         if len(task.health_check_results) > 0:
             task_up = any([hc_result.alive is True for hc_result in task.health_check_results])
